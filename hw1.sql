@@ -14,52 +14,47 @@ insert INTO courses (name, is_exam, min_grade, max_grade) VALUES ('mathematics',
 
 
 
-select * from courses 
+select * from courses limit 100;
+
 
 
 create table groups(
 	id SERIAL primary key,
 	full_name VARCHAR(50),
 	short_name VARCHAR(50),
-	students_ids varchar
+	students_ids integer[]
 	);
 	
-insert INTO groups (full_name, short_name, students_ids) VALUES ('Ivanst', 'Iv', '1,2,3'),
-('Golan', 'Gol', '4,5,6' ),('Efremov', 'Efr', '7,8'),('Balkanov', 'Bal', '9,10' )
+insert INTO groups (full_name, short_name, students_ids) VALUES ('Ivanst', 'Iv', array[1, 2, 3]),
+('Golan', 'Gol', array[4, 5, 6] ),('Efremov', 'Efr', array[7, 8]),('Balkanov', 'Bal', array[9, 10] )
 ;
-select * from groups
-
-
+select * from groups limit 100;
 
 create table students(
 	student_id SERIAL primary key,
 	first_name VARCHAR(50),
 	last_name VARCHAR(50),
 	group_id int,
-	courses_ids varchar,
+	courses_ids integer[],
 	foreign key (group_id) references groups(id)
 	);
+--Найдем id группы для каждого студента 
+select id  from groups where students_ids@>'{1}' limit 20;
+select id  from groups where students_ids@>'{2}' limit 20;
+select id  from groups where students_ids@>'{3}' limit 20;
+select id  from groups where students_ids@>'{4}' limit 20;
+select id  from groups where students_ids@>'{5}' limit 20;
+select id  from groups where students_ids@>'{6}' limit 20;
+select id  from groups where students_ids@>'{7}' limit 20;
+select id  from groups where students_ids@>'{8}' limit 20;
+select id  from groups where students_ids@>'{9}' limit 20;
+select id  from groups where students_ids@>'{10}' limit 20;
 
-
--- Напишем такой фильтр, который позволит понять в какой группе находится каждый студент
-select id  from groups where students_ids like '%1,%' OR students_ids like '%,1';
-select id  from groups where students_ids like '%2,%' OR students_ids like '%,2';
-select id  from groups where students_ids like '%3,%' OR students_ids like '%,3';
-select id  from groups where students_ids like '%4,%' OR students_ids like '%,4';
-select id  from groups where students_ids like '%5,%' OR students_ids like '%,5';
-select id  from groups where students_ids like '%6,%' OR students_ids like '%,6';
-select id  from groups where students_ids like '%7,%' OR students_ids like '%,7';
-select id  from groups where students_ids like '%8,%' OR students_ids like '%,8';
-select id  from groups where students_ids like '%9,%' OR students_ids like '%,9';
-select id  from groups where students_ids like '%10,%' OR students_ids like '%,10';
-
-
-
-insert INTO students (first_name, last_name, group_id, courses_ids) VALUES ('Ivanov', 'Ivan', '1','1,2,3'),
-('Golubev', 'Andrei', '1','2,3,4' ),('Efremov', 'Artem', '1','3,4,5'),('Balkanov', 'Anatoly','2', '2,4,5' ),
-('Seleznev','georgy','2',  '1,2,3'),('Antonov', 'Mikhail', '2','2,3,4'),('Dmitriev','Aleksei','3','1,4,5'),
-('Ivanov', 'Ivan', '3','1,3,5'),('Ivanov', 'Ivan', '4','1,2,5'),('Ivanov', 'Ivan', '4','1,2,3');
-select * from students
+insert INTO students (first_name, last_name, group_id, courses_ids) VALUES ('Ivanov', 'Ivan', '1','{1,2,3}'),
+('Golubev', 'Andrei', '1','{2,3,4}' ),('Efremov', 'Artem', '1','{3,4,5}'),('Balkanov', 'Anatoly','2', '{2,4,5}' ),
+('Seleznev','georgy','2',  '{1,2,3}'),('Antonov', 'Mikhail', '2','{2,3,4}'),('Dmitriev','Aleksei','3','{1,4,5}'),
+('Ivanov', 'Ivan', '3','{1,3,5}'),('Ivanov', 'Ivan', '4','{1,2,5}'),('Ivanov', 'Ivan', '4','{1,2,3}');
+select * from students limit 100
 
 create table mathematics(
 	student_id int,
@@ -71,7 +66,7 @@ create table mathematics(
 
 
 --найдем, какие студенты относятся к математике
-select student_id  from students where courses_ids like '%1%';
+select student_id  from students where courses_ids@>'{1}' limit 20;
 
 insert INTO mathematics (student_id, grade) VALUES ('1','45'),('5','35'),('7','30'),('8','20'),('9','27'),('10','37');
 
@@ -87,8 +82,8 @@ SET grade_str = CASE
 		when grade>=25 then 'E'
 		else  'F'
 			
-end 
+end;
 
-select * from mathematics 
+select * from mathematics limit 100
 
 	
