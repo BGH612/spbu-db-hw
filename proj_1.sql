@@ -58,8 +58,6 @@ VALUES ('Ivan Antonov','Head manager','sales','60000'), ('Andrei Fedorov','manag
 
 --Найдем сотрудника, у которого зарплата самая большая 
 SELECT * FROM employees ORDER BY salary DESC LIMIT 1 ;
---вычислим премию для менеджеров, для этого перемножим их мотивацию на общее количество продаж
-UPDATE employees 
-SET premium= CASE
+
 
 
